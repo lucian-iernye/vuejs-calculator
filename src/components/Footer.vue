@@ -1,8 +1,8 @@
 <template>
   <footer class="footer">
     <p>{{ copyright }}</p>
-    <a href="#">GitHub</a>
-    <a href="#">LinkedIn</a>
+    <a href="https://github.com/lucian-iernye/vuejs-calculator">GitHub</a>
+    <a href="https://www.linkedin.com/in/lucian-iernye/">LinkedIn</a>
   </footer>
 </template>
 

@@ -3,8 +3,8 @@
     <div class="display">{{number || "0"}}</div>
     <div @click="clear" class="btn special delete">C</div>
     <div @click="remove" class="btn special delete">DEL</div>
-    <div class="btn special">+/-</div>
-    <div class="btn special">%</div>
+    <div @click="sign" class="btn special">+/-</div>
+    <div @click="percentage" class="btn special">%</div>
     <div @click="append('7')" class="btn">7</div>
     <div @click="append('8')" class="btn">8</div>
     <div @click="append('9')" class="btn">9</div>
@@ -49,6 +49,13 @@ export default {
       this.number = "";
     },
 
+    sign() {
+      this.number =
+        this.number.charAt(0) === "-"
+          ? this.number.slice(1)
+          : `-${this.number}`;
+    },
+
     append(num) {
       if (this.operatorClicked) {
         (this.number = ""), (this.operatorClicked = false);
@@ -57,12 +64,15 @@ export default {
       if (this.number.length > 8) {
         let result = `${this.number}${num}`;
         this.number = result.slice(0, -1);
-      } else if (this.number.length <= 9) {
+      }
+      if (this.number.length <= 9) {
         this.number = `${this.number}${num}`;
       }
-      // if (this.number.indexOf(".") === -1) {
-      //   this.number = `${this.number}${num}`;
-      // } else {
+      // if (this.number.includes(".")) {
+      //   let newNum = `${this.number}${num}`;
+      //   this.number = newNum.slice(0, 10);
+      // }
+      // else {
       //   return this.number.toFixed(2);
       // }
     },
@@ -111,15 +121,25 @@ export default {
       this.number = Math.sqrt(this.number);
     },
 
+    percentage() {
+      this.number = `${parseFloat(this.number) / 100}`;
+      if (this.number.length > 9) {
+        this.number = "E";
+      }
+    },
+
     equal() {
       if (this.operator === null) {
         return this.number;
       }
-      let result = `${this.operator(
+      this.number = `${this.operator(
         parseFloat(this.prevNum),
         parseFloat(this.number)
       )}`;
-      this.number = parseFloat(result).toFixed(2);
+
+      if (this.number.includes(".")) {
+        this.number = parseFloat(this.number).toFixed(2);
+      }
 
       if (this.number.length > 9) {
         this.number = "E";
